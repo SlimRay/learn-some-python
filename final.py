@@ -12,15 +12,17 @@ def main():
     for i in range(page_start, page_end):
         if i == 1:
             url = 'http://www.cxdq.com/'
-            continue
         else:
             url = 'http://www.cxdq.com/index_%d.htm' % i
     pics_url = get_url(url)
 
-
-    for i in pics_url:
-        t = threading.Thread(target=save_file, args=(i,))
+    sub_thread = []
+    for i in range(len(pics_url)):
+        t = threading.Thread(target=save_file, args=(pics_url[i],))
         t.start()
+        sub_thread.append(t)
+        for t in sub_thread:
+            t.join()
 
 
 def get_url(url):
@@ -29,9 +31,6 @@ def get_url(url):
     html = res.text
     img_url = re.findall(r'http.*?jpg', html)
     return img_url
-
-
-os.chdir('picsfromweb')
 
 
 def save_file(url):
@@ -44,4 +43,8 @@ def save_file(url):
 
 
 if __name__ == '__main__':
+    if os.path.exists('picsfromweb'):
+        os.chdir('picsfromweb')
+    else:
+        os.mkdir('picsfromweb')
     main()
