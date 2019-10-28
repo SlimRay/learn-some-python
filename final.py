@@ -47,4 +47,5 @@ if __name__ == '__main__':
         os.chdir('picsfromweb')
     else:
         os.mkdir('picsfromweb')
+        os.chdir('picsfromweb')
     main()
