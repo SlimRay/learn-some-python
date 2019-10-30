@@ -14,15 +14,17 @@ def main():
             url = 'http://www.cxdq.com/'
         else:
             url = 'http://www.cxdq.com/index_%d.htm' % i
-    pics_url = get_url(url)
+        pics_url = get_url(url)
 
-    sub_thread = []
-    for i in range(len(pics_url)):
-        t = threading.Thread(target=save_file, args=(pics_url[i],))
-        t.start()
-        sub_thread.append(t)
-        for t in sub_thread:
-            t.join()
+        sub_thread = []
+        files = range(len(pics_url))
+        for j in files:
+            j = threading.Thread(target=save_file, args=(pics_url[j],))
+            sub_thread.append(j)
+        for j in files:
+            sub_thread[j].start()
+        for j in files:
+            sub_thread[j].join()
 
 
 def get_url(url):
